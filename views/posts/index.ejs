@@ -1,0 +1,41 @@
+<% layout('./layouts/boilerplate') %>
+
+<main>
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <h1>All Posts</h1>
+            <div class="ps-5">
+                <a name="" id="" class="btn btn-primary" href="/posts/new" role="button">Create</a>
+            </div>
+        </div>
+
+        <div style="width: 640px;">
+            <% for (let post of posts) {%>
+            <div class="card mb-3">
+                <a href="posts/<%= post._id %>" style="color: inherit;
+                text-decoration: inherit;">
+                    <% if (post.image.url) { %>
+                    <img src="<%= post.image.url %>" alt="" class="card-img-top" />
+                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= post.title %></h5>
+                        <p class="card-text">
+                            Posted by <span style="text-transform: capitalize; font-weight: bold;"><%= post.author.username %></span>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Created On: <%= post.createdOn %> <br>
+                                <% if (post.modifiedOn) { %>
+                                Edited On: <%= post.modifiedOn %>
+                                <% } %>
+                            </small>
+                        </p>
+                    </div>
+                </a>
+            </div>
+            <% } %>
+        </div>
+
+
+    </div>
+</main>

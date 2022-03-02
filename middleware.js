@@ -1,0 +1,66 @@
+// Utils
+const ExpressError = require('./utils/ExpressError');
+const { cloudinary } = require('./cloudinary');
+
+// Schemas
+const { postSchema, commentSchema } = require('./schemas.js');
+
+// Models
+const Post = require('./models/post');
+const Comment = require('./models/comment');
+
+
+// Exports
+module.exports.isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        req.session.returnTo = req.originalUrl
+        req.flash('error', 'Who do you think you are?');
+        return res.redirect('/login');
+    }
+    next();
+}
+
+module.exports.validatePost = (req, res, next) => {
+    const { error } = postSchema.validate(req.body);
+    // TODO if no req.file then throw error. check logic
+    if (error) {
+        if (req.file) {
+            cloudinary.uploader.destroy(req.file.filename);         
+        }
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+        
+    } else {
+        next();
+    }
+}
+
+module.exports.isAuthor = async(req, res, next) => {
+    const { id } = req.params;
+    const post = await Post.findById(id)
+    if (!post.author.equals(req.user._id)) {
+        req.flash('error', 'You can\'t touch this')
+        return res.redirect(`/posts/${id}`)
+    }
+    next();
+}
+
+module.exports.validateComment = (req, res, next) => {
+    const { error } = commentSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
+module.exports.isCommentAuthor = async(req, res, next) => {
+    const { id, commentId } = req.params;
+    const comment = await Comment.findById(commentId)
+    if (!comment.author.equals(req.user._id)) {
+        req.flash('error', 'You can\'t touch this')
+        return res.redirect(`/posts/${id}`)
+    }
+    next();
+}

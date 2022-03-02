@@ -1,0 +1,51 @@
+<% layout('./layouts/boilerplate') %>
+
+<main>
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <h1>New Post</h1>
+        </div>
+
+        <form action="/posts" method="POST" novalidate class="validated-form pb-5" enctype="multipart/form-data">
+            <div class="form-group pb-4">
+                <label for="title">Title *</label>
+                <input type="text" class="form-control" id="title" name="post[title]" required>
+                <div class="valid-feedback">Noice!</div>
+            </div>
+
+            <div class="form-group pb-4">
+                <label for="text">Text</label>
+                <input type="text" class="form-control" id="text" name="post[text]">
+                <div class="valid-feedback">Noice!</div>
+            </div>
+
+            <div class="form-group pt-3 pb-4">
+                <label for="image" class="btn btn-outline-secondary" style="width: 300px; cursor: pointer;" id="image-label">Upload Image</label>
+                <input type="file" class="form-control" id="image" value="test" name="image" style="display: none;">
+                <div class="valid-feedback">Noice!</div>
+            </div>
+            
+            <div class="form-group pb-5" id="preview"></div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+</main>
+
+<script>
+    image.onchange = evt => {
+        const [file] = image.files
+        if (file) {
+            if (document.getElementById("thumbnail")) {
+                document.getElementById("thumbnail").remove();
+            }
+            document.getElementById('image-label').textContent = 'Replace Image'
+            let thumbnail = new Image();
+            thumbnail.src = URL.createObjectURL(file);
+            thumbnail.width = "300"
+            thumbnail.id = "thumbnail"
+            document.getElementById('preview').appendChild(thumbnail)
+        }
+    }
+</script>
