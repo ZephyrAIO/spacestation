@@ -59,13 +59,14 @@ const store = MongoStore.create({
 store.on("error", function (e) {
     console.log("SESSION STORE ERROR:", e);
 })
-
+app.set('trust proxy', true)
 const sessionConfig = {
     store,
     name: 'spacestation',
     secret: process.env.SECRET || 'secretsauce',
     resave: false,
     saveUninitialized: true,
+    proxy: true,
     cookie: {
         httpOnly: true,
         secure: process.env.SECURE || false,
@@ -73,8 +74,9 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
-console.log(sessionConfig)
 app.use(session(sessionConfig))
+
+
 
 // App
 app.engine('ejs', ejsMate);
