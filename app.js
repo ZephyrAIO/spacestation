@@ -48,34 +48,32 @@ db.once("open", () => {
 
 
 // Session
-const secret = process.env.SECRET || 'secretsauce'
-
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: secret
+        secret: process.env.SECRET || 'secretsauce'
     }
 })
 
 store.on("error", function (e) {
     console.log("SESSION STORE ERROR:", e);
 })
-app.set('trust proxy', true)
+
 const sessionConfig = {
     store,
     name: 'spacestation',
-    secret: secret,
+    secret: process.env.SECRET || 'secretsauce',
     resave: false,
     saveUninitialized: true,
-    proxy: true,
     cookie: {
         httpOnly: true,
-        secure: true,
+        secure: process.env.SECURE || false,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+console.log(sessionConfig)
 app.use(session(sessionConfig))
 
 // App
