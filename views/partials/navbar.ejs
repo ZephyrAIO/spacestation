@@ -1,25 +1,36 @@
-<header class="p-3 mb-5 border-bottom">
+<header class="p-3 sticky-top">
     <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-4">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-light text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"></use>
                 </svg>
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/" class="nav-link px-2 link-dark">Home</a></li>
-                <li><a href="/posts" class="nav-link px-2 link-dark">Posts</a></li>
+                <li><a href="/" class="nav-link px-2 link-light">Space Station</a></li>
+                <li><a href="/posts" class="nav-link px-2 link-light">Posts</a></li>
             </ul>
 
-            <div class="dropdown text-end">
-                <% if(currentUser) { %>
-                <a href="/logout" class="btn btn-outline-danger ms-2">Logout</a>
-                <% } else { %>
-                <a href="/login" class="btn btn-outline-primary ms-2">Login</a>
-                <a href="/register" class="btn btn-primary ms-2">Register</a>
-                <% } %>
-            </div>
+
+            <% if(currentUser) { %>
+            <a class="nav-link dropdown-toggle link-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <%= currentUser.username %>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Account Settings</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a href="/logout" class="dropdown-item text-danger" href="#">Logout</a></li>
+            </ul>
+
+            <% } else { %>
+            <a href="/login" class="btn btn-outline-primary btn-lg ms-4 px-4 border-3 rounded-pill">Sign in</a>
+            <a href="/register" class="btn btn-primary btn-lg ms-4 px-4 border-3 rounded-pill">Join</a>
+            <% } %>
+
         </div>
     </div>
 </header>

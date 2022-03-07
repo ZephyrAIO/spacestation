@@ -1,41 +1,47 @@
 <% layout('./layouts/boilerplate') %>
-
-<main>
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <h1>All Posts</h1>
-            <div class="ps-5">
-                <a name="" id="" class="btn btn-primary" href="/posts/new" role="button">Create</a>
-            </div>
-        </div>
-
-        <div style="width: 640px;">
-            <% for (let post of posts) {%>
-            <div class="card mb-3">
-                <a href="posts/<%= post._id %>" style="color: inherit;
-                text-decoration: inherit;">
-                    <% if (post.image.url) { %>
-                    <img src="<%= post.image.url %>" alt="" class="card-img-top" />
-                    <% } %>
-                    <div class="card-body">
-                        <h5 class="card-title"><%= post.title %></h5>
-                        <p class="card-text">
-                            Posted by <span style="text-transform: capitalize; font-weight: bold;"><%= post.author.username %></span>
-                        </p>
-                        <p class="card-text">
-                            <small class="text-muted">
-                                Created On: <%= post.createdOn %> <br>
-                                <% if (post.modifiedOn) { %>
-                                Edited On: <%= post.modifiedOn %>
-                                <% } %>
-                            </small>
-                        </p>
-                    </div>
-                </a>
-            </div>
-            <% } %>
-        </div>
-
-
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-5 text-white">
+    <h1>All Posts</h1>
+    <div class="ps-5">
+        <a name="" id="" class="btn btn-lg btn-primary rounded-pill" href="/posts/new" role="button">Create</a>
     </div>
-</main>
+</div>
+
+<div style="width: 640px;">
+    <% for (let post of posts) {%>
+    <div class="card border-0 mt-5 mb-3 text-black bg-light">
+        <a href="posts/<%= post._id %>" style="color: inherit;
+                text-decoration: inherit;">
+            <% if (post.image.url) { %>
+            <img src="<%= post.image.url %>" alt="" class="card-img-top" />
+            <% } %>
+            <div class="card-body">
+                <h5 class="card-title"><%= post.title %></h5>
+                <p class="card-text">
+                    Posted by <span style="text-transform: capitalize; font-weight: bold;"><%= post.author.username %></span>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        Created On: <%= post.createdOn %> <br>
+                        <% if (post.modifiedOn) { %>
+                        Edited On: <%= post.modifiedOn %>
+                        <% } %>
+                    </small>
+                </p>
+            </div>
+        </a>
+
+        <div class="d-flex justify-content-end m-3">
+            <span class="bg-white ms-2">
+                <button type="button" class="btn btn-outline-dark border-white px-2 py-1 pe-4">
+                    <img src="/emoji/up.gif" alt=" " width="40" height="40" class="me-2">10
+                </button>
+            </span>
+            <span class="bg-white ms-2">
+                <button type="button" class="btn btn-outline-dark border-white px-2 py-1 pe-4">
+                    <img src="/emoji/down.gif" alt=" " width="40" height="40" class="me-2">10
+                </button>
+            </span>
+        </div>
+    </div>
+    <% } %>
+</div>

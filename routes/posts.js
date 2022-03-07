@@ -18,9 +18,9 @@ router.post('/', isLoggedIn, upload.single(('image')), validatePost, catchAsync(
 
 
 // R
-router.get('/', catchAsync(posts.renderIndex))
+router.get('/', isLoggedIn, catchAsync(posts.renderIndex))
 
-router.get('/:id', catchAsync(posts.renderShow))
+router.get('/:id', isLoggedIn, catchAsync(posts.renderShow))
 
 
 // U

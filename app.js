@@ -1,9 +1,14 @@
+// TODO 
+// 1.
+
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
 const express = require('express');
 const app = express();
+
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
@@ -16,6 +21,9 @@ const passport = require('passport');
 const LocalStrat = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+
+const http = require('http');
+const reload = require('reload');
 
 
 
@@ -93,6 +101,8 @@ app.use(mongoSanitize({
 
 
 
+
+
 // Auth
 app.use(passport.initialize());
 app.use(passport.session())
@@ -114,12 +124,16 @@ const scriptSrcUrls = [
     "https://cdn.jsdelivr.net/",
 ];
 const styleSrcUrls = [
-    "https://cdn.jsdelivr.net/",
+    "https://cdn.jsdelivr.net",
+    "https://fonts.googleapis.com"
 ];
 const connectSrcUrls = [
-    "https://res.cloudinary.com/dgvmvasdt/"
+    "https://res.cloudinary.com/dgvmvasdt/",
+    "ws://localhost:9856/"
 ];
-const fontSrcUrls = [];
+const fontSrcUrls = [
+    "https://fonts.gstatic.com"
+];
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
@@ -158,8 +172,13 @@ app.use('/', userRoutes)
 app.use('/posts', postRoutes)
 app.use('/posts/:id/comments', commentRoutes)
 
+
 app.all('*', (req, res, next) => {
-    next(new ExpressError('Page Not Found', 404))
+    if (req.url === "/reload/reload.js") {
+        next()
+    } else {
+        next(new ExpressError('DEV: Page Not Found', 404))
+    }
 })
 
 app.use((err, req, res, next) => {
@@ -169,6 +188,14 @@ app.use((err, req, res, next) => {
 })
 
 const port = process.env.PORT || 3000
-app.listen(port, () => {
-    console.log(`Serving on port ${port}`)
+app.set('port', process.env.PORT || 3000)
+const server = http.createServer(app)
+
+// Reload code here
+reload(app).then(function (reloadReturned) {
+    server.listen(app.get('port'), function () {
+        console.log('Web server listening on port http://localhost:' + app.get('port'))
+    })
+}).catch(function (err) {
+    console.error('Reload could not start, could not start server/sample app', err)
 })

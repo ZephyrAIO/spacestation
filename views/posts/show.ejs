@@ -1,71 +1,87 @@
 <% layout('./layouts/boilerplate') %>
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <% if(currentUser && post.author.equals(currentUser._id)) { %>
+    <div class="ps-5">
+        <a name="" id="" class="btn btn-primary rounded-pill" href="/posts/<%= post._id %>/edit" role="button">Edit</a>
+    </div>
+    <div class="ps-3">
+        <form class="" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+    <% } %>
+</div>
 
-<main>
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <h1><%= post.title %></h1>
-            <% if(currentUser && post.author.equals(currentUser._id)) { %>
-            <div class="ps-5">
-                <a name="" id="" class="btn btn-primary" href="/posts/<%= post._id %>/edit" role="button">Edit</a>
+<div style="width: 640px;">
+
+    <div class="card border-0 mt-5 mb-3 text-black bg-light">
+        <img src="<%= post.image.url %>" alt="" class="card-img-top" />
+        <div class="card-body">
+            <h5 class="card-title"><%= post.title %></h5>
+            <p class="card-text">
+                Posted by <span style="text-transform: capitalize; font-weight: bold;"><%= post.author.username %></span>
+            </p>
+            <p class="py-5"><%= post.text %></p>
+            <p class="card-text">
+                <small class="text-muted">
+                    Created On: <%= post.createdOn %> <br>
+                    <% if (post.modifiedOn) { %>
+                    Edited On: <%= post.modifiedOn %>
+                    <% } %>
+                </small>
+            </p>
+        </div>
+
+        <div class="d-flex justify-content-end m-3">
+            <span class="bg-white ms-2">
+                <button type="button" class="btn btn-outline-dark border-white px-2 py-1 pe-4">
+                    <img src="/emoji/up.gif" alt=" " width="36" height="36" class="me-2">10
+                </button>
+            </span>
+            <span class="bg-white ms-2">
+                <button type="button" class="btn btn-outline-dark border-white px-2 py-1 pe-4">
+                    <img src="/emoji/down.gif" alt=" " width="32" height="32" class="me-2" style="margin: 1px 0 3px 0;">10
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <form action="/posts/<%= post._id %>/comments" method="POST" class="py-5 validated-form" novalidate>
+        <div class="form-group pb-4">
+            <% if(currentUser) { %>
+            <label class="form-label" for="text">Comment as <%= user.username %> </label>
+            <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required>
+            <div class="valid-feedback">
+                Noice!
             </div>
-            <div class="ps-3">
-                <form class="" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+            <% } else { %>
+            <label class="form-label" for="text"> <a href="/login">Login</a> or <a href="/register">register</a> to leave a comment</label>
+            <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required>
+            <div class="valid-feedback">
+                Noice!
             </div>
             <% } %>
         </div>
+        <button type="submit" class="btn btn-primary rounded-pill">Send it</button>
+    </form>
 
-        <p>
-            Posted by <span style="text-transform: capitalize; font-weight: bold;"><%= post.author.username %></span>
-        </p>
-
-        <% if (post.image.url) { %>
-        <img src="<%= post.image.url %>" alt="" style="max-width: 1000px; max-height: 1000px" />
-        <% } %>
-
-        <% if (post.text) { %>
-        <p class="py-5"><%= post.text %></p>
-        <% } %>
-
-        <form action="/posts/<%= post._id %>/comments" method="POST" class="py-5 validated-form" novalidate>
-            <div class="form-group pb-4">
-                <% if(currentUser) { %>
-                <label class="form-label" for="text">Comment as <%= user.username %> </label>
-                <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required>
-                <div class="valid-feedback">
-                    Noice!
+    <ul style="list-style: none; padding: 0; margin: 0;">
+        <% if (post.comments) { %>
+        <% for (let comment of post.comments) { %>
+        <li class="pb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2"><%= comment.author.username %></h6>
+                    <p class="card-text"><%= comment.text %></p>
+                    <% if(currentUser && comment.author.equals(currentUser._id)) { %>
+                    <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-link text-danger btn-sm">Remove</button>
+                    </form>
+                    <% } %>
                 </div>
-                <% } else { %>
-                <label class="form-label" for="text"> <a href="/login">Login</a> or <a href="/register">register</a> to leave a comment</label>
-                <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required>
-                <div class="valid-feedback">
-                    Noice!
-                </div>
-                <% } %>
             </div>
-            <button type="submit" class="btn btn-primary">Send it</button>
-        </form>
-
-        <ul style="list-style: none; padding: 0; margin: 0;">
-            <% if (post.comments) { %>
-            <% for (let comment of post.comments) { %>
-            <li class="pb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2"><%= comment.author.username %></h6>
-                        <p class="card-text"><%= comment.text %></p>
-                        <% if(currentUser && comment.author.equals(currentUser._id)) { %>
-                        <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-                            <button type="submit" class="btn btn-link text-danger btn-sm">Remove</button>
-                        </form>
-                        <% } %>
-                    </div>
-                </div>
-            </li>
-            <% } %>
-            <% } %>
-        </ul>
-
-    </div>
-</main>
+        </li>
+        <% } %>
+        <% } %>
+    </ul>
+</div>

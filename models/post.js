@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const Comment = require('./comment')
 const Schema = mongoose.Schema;
 
+// Likes/dislikes
+
 const PostSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
@@ -20,6 +22,12 @@ const PostSchema = new Schema({
     },
     modifiedOn: {
         type: Date,
+    },
+    likes: {
+        type: Number,
+    },
+    dislikes: {
+        type: Number,
     },
     comments: [
         {
