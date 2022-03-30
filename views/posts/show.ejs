@@ -15,13 +15,14 @@
 <div style="width: 640px;">
 
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
+        <% if (post.image.url) { %>
         <img src="<%= post.image.url %>" alt="" class="card-img-top" />
-        <div class="card-body">
+        <% } %>
+        <div class="card-body py-4">
             <h5 class="card-title"><%= post.title %></h5>
             <p class="card-text">
                 Posted by <span style="text-transform: capitalize; font-weight: bold;"><%= post.author.username %></span>
             </p>
-            <p class="py-5"><%= post.text %></p>
             <p class="card-text">
                 <small class="text-muted">
                     Created On: <%= post.createdOn %> <br>
@@ -31,38 +32,26 @@
                 </small>
             </p>
         </div>
-
-        <div class="d-flex justify-content-end m-3">
-            <span class="bg-white ms-2">
-                <button type="button" class="btn btn-outline-dark border-white px-2 py-1 pe-4">
-                    <img src="/emoji/up.gif" alt=" " width="36" height="36" class="me-2">10
-                </button>
-            </span>
-            <span class="bg-white ms-2">
-                <button type="button" class="btn btn-outline-dark border-white px-2 py-1 pe-4">
-                    <img src="/emoji/down.gif" alt=" " width="32" height="32" class="me-2" style="margin: 1px 0 3px 0;">10
-                </button>
-            </span>
-        </div>
     </div>
 
     <form action="/posts/<%= post._id %>/comments" method="POST" class="py-5 validated-form" novalidate>
         <div class="form-group pb-4">
-            <% if(currentUser) { %>
-            <label class="form-label" for="text">Comment as <%= user.username %> </label>
-            <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required>
+
+            <label class="form-label" for="text">
+                <% if(currentUser) { %>
+                Comment as <%= user.username %>
+                <% } else { %>
+                <a href="/login">Sign in</a> or <a href="/register">register</a> to leave a comment
+                <% } %>
+            </label>
+
+            <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required <% if(!currentUser) { %> disabled <% } %>>
             <div class="valid-feedback">
                 Noice!
             </div>
-            <% } else { %>
-            <label class="form-label" for="text"> <a href="/login">Login</a> or <a href="/register">register</a> to leave a comment</label>
-            <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required>
-            <div class="valid-feedback">
-                Noice!
-            </div>
-            <% } %>
+
         </div>
-        <button type="submit" class="btn btn-primary rounded-pill">Send it</button>
+        <button type="submit" class="btn btn-primary rounded-pill" <% if(!currentUser) { %> disabled <% } %>>Send it</button>
     </form>
 
     <ul style="list-style: none; padding: 0; margin: 0;">

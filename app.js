@@ -158,10 +158,17 @@ app.use(
 
 // Locals
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
+    if (req.url === "/reload/reload.js") {
+        next()
+    } else {
+        if (req.originalUrl !== "/login" && req.originalUrl !== "/logout" && req.originalUrl !== "/register") {
+            req.session.returnTo = req.originalUrl;
+        }
+        res.locals.currentUser = req.user;
+        res.locals.success = req.flash('success');
+        res.locals.error = req.flash('error');
+        next();
+    }
 })
 
 app.get('/', (req, res) => {

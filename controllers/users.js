@@ -33,6 +33,8 @@ module.exports.login = (req, res) => {
 
 module.exports.logout = (req, res) => {
     const { username } = req.user;
+    const redirectUrl = req.session.returnTo || '/';
+    delete req.session.returnTo;
     req.logout();
-    res.redirect('/');
+    res.redirect(redirectUrl);
 }

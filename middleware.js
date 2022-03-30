@@ -13,7 +13,6 @@ const Comment = require('./models/comment');
 // Exports
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        req.session.returnTo = req.originalUrl
         req.flash('error', 'Put your data in the bag and nobody gets hurt.');
         return res.redirect('/login');
     }
