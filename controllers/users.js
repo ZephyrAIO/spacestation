@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Post = require('../models/post');
 
 module.exports.renderRegister = (req, res) => {
     res.render('users/register');
@@ -37,4 +38,10 @@ module.exports.logout = (req, res) => {
     delete req.session.returnTo;
     req.logout();
     res.redirect(redirectUrl);
+}
+
+module.exports.renderProfile = async (req, res) => {
+    const profile = await User.findById(req.params.id);
+    const posts = await Post.find({author: req.params.id}).sort({ createdOn: 'desc'}).populate('author');
+    res.render('users/profile', { profile, posts });
 }

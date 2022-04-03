@@ -19,8 +19,7 @@ module.exports.create = async (req, res, next) => {
 
 // R
 module.exports.renderIndex = async (req, res) => {
-    const posts = await Post.find({}).populate('author');
-    posts.reverse()
+    const posts = await Post.find({}).sort({ createdOn: 'desc'}).populate('author');
     res.render('posts/index', { posts });
 }
 

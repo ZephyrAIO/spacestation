@@ -18,4 +18,7 @@ router.route('/login')
 router.route('/logout')
     .get(users.logout);
 
+router.route('/users/:id').get(catchAsync(users.renderProfile));
+    
+
 module.exports = router;

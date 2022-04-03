@@ -4,13 +4,11 @@
 <div style="width: 640px;">
 
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
-        <% if (post.image.url) { %>
         <img src="<%= post.image.url %>" alt="" class="card-img-top" />
-        <% } %>
         <div class="card-body py-4">
             <h5 class="card-title"><%= post.title %></h5>
             <p class="card-text">
-                Posted by <span style="text-transform: capitalize; font-weight: bold;"><%= post.author.username %></span>
+                Posted by <a href="/users/<%= post.author._id %>" style="text-transform: capitalize; font-weight: bold; text-decoration: none;"><%= post.author.username %></a>
             </p>
             <p class="card-text">
                 <small class="text-muted">
