@@ -155,7 +155,7 @@ app.use(
 );
 
 
-// Locals
+// Localssss
 app.use((req, res, next) => {
     if (req.url === "/reload/reload.js") {
         next()
