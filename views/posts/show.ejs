@@ -1,7 +1,11 @@
 <% layout('./layouts/boilerplate') %>
 
 
-<div style="width: 640px;">
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
+    <h1><%= post.title %></h1>
+</div>
+
+<div style="width: 640px; margin: 0 auto;">
 
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
         <img src="<%= post.image.url %>" alt="" class="card-img-top" />

@@ -1,11 +1,12 @@
 <% layout('./layouts/boilerplate') %>
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-5 text-white">
-    <% if(currentUser) { %>
-    <a href="/new" role="button" class="btn btn-primary rounded-pill">Create Post</a>
-    <% } %> 
+
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
+    <h1>Space Station</h1>
 </div>
 
-<div style="width: 640px;">
+<div style="width: 640px; margin: 0 auto;">
+    <%- include('../partials/filter.ejs') %>
+
     <% for (let post of posts) {%>
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
         <a href="<%= post._id %>" style="color: inherit; text-decoration: inherit;">

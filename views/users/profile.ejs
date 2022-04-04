@@ -1,17 +1,19 @@
 <% layout('./layouts/boilerplate') %>
 
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-5">
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
     <h1><%= profile.username %>'s Space </h1>
 </div>
 
-<div style="width: 640px;">
+<div style="width: 640px; margin: 0 auto;">
+    <%- include('../partials/filter.ejs') %>
+
     <% for (let post of posts) {%>
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
-        <a href="/posts/<%= post._id %>" style="color: inherit; text-decoration: inherit;">
+        <a href="/<%= post._id %>" style="color: inherit; text-decoration: inherit;">
             <img src="<%= post.image.url %>" alt="" class="card-img-top" />
         </a>
         <div class="card-body py-4">
-            <a href="/posts/<%= post._id %>" style="color: inherit; text-decoration: inherit;">
+            <a href="/<%= post._id %>" style="color: inherit; text-decoration: inherit;">
                 <h5 class="card-title"><%= post.title %></h5>
             </a>
             <p class="card-text">

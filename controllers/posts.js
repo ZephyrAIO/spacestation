@@ -66,6 +66,6 @@ module.exports.update = async (req, res) => {
 // D
 module.exports.delete = async (req, res) => {
     const { id } = req.params;
-    await Post.findByIdAndDelete(id)
-    res.redirect('/profile')
+    await Post.findByIdAndDelete(id);
+    res.redirect('/');
 }

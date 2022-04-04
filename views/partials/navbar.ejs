@@ -1,14 +1,11 @@
 <header class="p-3 sticky-top">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-4">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-light text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                    <use xlink:href="#bootstrap"></use>
-                </svg>
-            </a>
-
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/" class="nav-link px-2 link-light">Space Station</a></li>
+                <li><a href="/" class="nav-link pe-4 link-light">Space Station</a></li>
+
+                <li><a href="/new" class="nav-link link-light">Share Your Station</a></li>
+
             </ul>
 
 
@@ -26,8 +23,8 @@
             </ul>
 
             <% } else { %>
-            <a href="/login" class="btn btn-outline-primary btn ms-4 px-4 border-3 rounded-pill">Sign in</a>
-            <a href="/register" class="btn btn-primary btn ms-4 px-4 border-3 rounded-pill">Join</a>
+            <a href="/login" class="btn btn-outline-primary ms-4 px-4 border-3 rounded-pill">Sign in</a>
+            <a href="/register" class="btn btn-primary ms-4 px-4 border-3 rounded-pill">Join</a>
             <% } %>
 
         </div>
