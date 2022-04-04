@@ -8,12 +8,12 @@ module.exports.create = async (req, res) => {
     post.comments.push(comment);
     await post.save();
     await comment.save();
-    res.redirect(`/posts/${post._id}`);
+    res.redirect(`/${post._id}`);
 }
 
 module.exports.delete = async (req, res) => {
     const { id, commentId } = req.params;
     await Post.findByIdAndUpdate(id, { $pull: { comments: commentId } });
     await Comment.findByIdAndDelete(commentId);
-    res.redirect(`/posts/${id}`)
+    res.redirect(`/${id}`)
 }

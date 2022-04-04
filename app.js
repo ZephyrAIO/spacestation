@@ -170,13 +170,9 @@ app.use((req, res, next) => {
     }
 })
 
-app.get('/', (req, res) => {
-    res.render('home')
-})
-
 app.use('/', userRoutes)
-app.use('/posts', postRoutes)
-app.use('/posts/:id/comments', commentRoutes)
+app.use('/', postRoutes)
+app.use('/:id/comments', commentRoutes)
 
 
 app.all('*', (req, res, next) => {

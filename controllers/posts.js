@@ -14,7 +14,7 @@ module.exports.create = async (req, res, next) => {
     post.author = req.user._id;
     await post.save();
     req.flash('success', 'Post created');
-    res.redirect(`/posts/${post._id}`);
+    res.redirect(`${post._id}`);
 }
 
 // R
@@ -30,9 +30,10 @@ module.exports.renderShow = async (req, res) => {
             path: 'author'
         }
     });
+    post.comments.reverse();
     if (!post) {
         req.flash('error', 'Its gone');
-        return res.redirect('/posts');
+        return res.redirect('/');
     }
     const user = req.user
     res.render('posts/show', { post, user });
@@ -43,7 +44,7 @@ module.exports.renderUpdate = async (req, res) => {
     const post = await Post.findById(req.params.id)
     if (!post) {
         req.flash('error', 'You almost fell down a hole of nothing! But, you\'re safe now.');
-        return res.redirect('/posts');
+        return res.redirect('/profile');
     }
     res.render('posts/edit', { post });
 }
@@ -59,12 +60,12 @@ module.exports.update = async (req, res) => {
     }
     await post.save();
     req.flash('success', 'Post updated');
-    res.redirect(`/posts/${post._id}`);
+    res.redirect(`/${post._id}`);
 }
 
 // D
 module.exports.delete = async (req, res) => {
     const { id } = req.params;
     await Post.findByIdAndDelete(id)
-    res.redirect('/posts')
+    res.redirect('/profile')
 }

@@ -15,8 +15,7 @@ router.route('/login')
     .get(users.renderLogin)
     .post(passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), users.login);
 
-router.route('/logout')
-    .get(users.logout);
+router.route('/logout').get(users.logout);
 
 router.route('/users/:id').get(catchAsync(users.renderProfile));
     
