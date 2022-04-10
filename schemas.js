@@ -14,12 +14,14 @@ const extension = (joi) => ({
                     allowedTags: [],
                     allowedAttributes: {},
                 });
+                console.log(clean);
+                console.log(value);
                 if (clean !== value) return helpers.error('string.escapeHTML', { value })
                 return clean;
             }
         }
     }
-})
+});
 
 
 const Joi = BaseJoi.extend(extension)
@@ -36,9 +38,3 @@ module.exports.commentSchema = Joi.object({
         text: Joi.string().required().escapeHTML()
     }).required()
 });
-
-// module.exports.userSchema = Joi.object({
-//     user: Joi.object({
-//         email: Joi.string().min(3).required().email()
-//     })
-// })

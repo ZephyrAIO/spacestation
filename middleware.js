@@ -19,22 +19,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     next();
 }
 
-module.exports.validatePost = (req, res, next) => {
-    const { error } = postSchema.validate(req.body);
-    // TODO if no req.file then throw error. check logic
-    if (error) {
-        if (req.file) {
-            cloudinary.uploader.destroy(req.file.filename);         
-        }
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-        
-    } else {
-        next();
-    }
-}
-
-module.exports.isAuthor = async(req, res, next) => {
+module.exports.isAuthor = async (req, res, next) => {
     const { id } = req.params;
     const post = await Post.findById(id)
     if (!post.author.equals(req.user._id)) {
@@ -42,6 +27,30 @@ module.exports.isAuthor = async(req, res, next) => {
         return res.redirect(`/${id}`)
     }
     next();
+}
+
+module.exports.isCommentAuthor = async (req, res, next) => {
+    const { id, commentId } = req.params;
+    const comment = await Comment.findById(commentId)
+    if (!comment.author.equals(req.user._id)) {
+        req.flash('error', 'You can\'t touch this')
+        return res.redirect(`/${id}`)
+    }
+    next();
+}
+
+module.exports.validatePost = (req, res, next) => {
+    const { error } = postSchema.validate(req.body);
+    if (error) {
+        if (req.file) {
+            cloudinary.uploader.destroy(req.file.filename);
+        }
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+
+    } else {
+        next();
+    }
 }
 
 module.exports.validateComment = (req, res, next) => {
@@ -52,14 +61,4 @@ module.exports.validateComment = (req, res, next) => {
     } else {
         next();
     }
-}
-
-module.exports.isCommentAuthor = async(req, res, next) => {
-    const { id, commentId } = req.params;
-    const comment = await Comment.findById(commentId)
-    if (!comment.author.equals(req.user._id)) {
-        req.flash('error', 'You can\'t touch this')
-        return res.redirect(`/${id}`)
-    }
-    next();
 }
