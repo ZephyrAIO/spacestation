@@ -1,11 +1,20 @@
 <% layout('./layouts/boilerplate') %>
 
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
-    <h1><%= profile.username %>'s Space </h1>
-</div>
-
-<div style="width: 640px; margin: 0 auto;">
+<div class="container" style="max-width: 640px; margin: 0 auto;">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
+        <h1><%= profile.username %>'s Space </h1>
+    </div>
+    
     <%- include('../partials/filter.ejs') %>
+
+
+    <% if (posts.length === 0) { %>
+    <a href="/new" id="profile-add-post" style="color: inherit; text-decoration: inherit;">
+        <div class="card border-1 border-white bg-dark mt-5 mb-3 text-center text-white d-flex flex-wrap align-items-center justify-content-center" style="height: 400px;">
+            <h4>Share Your Station</h4>
+        </div>
+    </a>
+    <% } %>
 
     <% for (let post of posts) {%>
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
@@ -30,4 +39,6 @@
         </div>
     </div>
     <% } %>
+
+
 </div>

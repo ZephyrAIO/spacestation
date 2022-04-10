@@ -1,11 +1,6 @@
 <% layout('./layouts/boilerplate') %>
 
-
-<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
-    <h1><%= post.title %></h1>
-</div>
-
-<div style="width: 640px; margin: 0 auto;">
+<div class="container" style="max-width: 640px; margin: 0 auto;">
 
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
         <img src="<%= post.image.url %>" alt="" class="card-img-top" />
@@ -41,7 +36,7 @@
                 <% if(currentUser) { %>
                 Comment as <%= user.username %>
                 <% } else { %>
-                <a href="/login">Sign in</a> or <a href="/register">register</a> to leave a comment
+                <a href="/login">Sign in</a> or <a href="/register">Join</a> to leave a comment
                 <% } %>
             </label>
 
@@ -51,7 +46,9 @@
             </div>
 
         </div>
+        <% if(currentUser) { %>
         <button type="submit" class="btn btn-link text-primary" <% if(!currentUser) { %> disabled <% } %>>Send it</button>
+        <% } %>
     </form>
 
     <ul style="list-style: none; padding: 0; margin: 0;">
@@ -60,7 +57,7 @@
         <li class="pb-4">
             <div class="card text-white bg-dark border-white">
                 <div class="card-body">
-                    <h6 class="card-subtitle mb-2"><%= comment.author.username %></h6>
+                    <h6 class="card-subtitle mb-2"><%= comment.author.username %>:</h6>
                     <p class="card-text"><%= comment.text %></p>
                     <% if(currentUser && comment.author.equals(currentUser._id)) { %>
                     <form action="/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">

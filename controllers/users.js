@@ -43,5 +43,6 @@ module.exports.logout = (req, res) => {
 module.exports.renderProfile = async (req, res) => {
     const profile = await User.findById(req.params.id);
     const posts = await Post.find({author: req.params.id}).sort({ createdOn: 'desc'}).populate('author');
+    console.log(posts.length)
     res.render('users/profile', { profile, posts });
 }

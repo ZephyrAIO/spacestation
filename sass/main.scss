@@ -47,4 +47,26 @@ h1 {
 }
 
 
+
+.dropdown-item:active {
+    background-color: $secondary !important;
+}
+
+.border-light {
+    border-color: $light !important;
+}
+
+#profile-add-post:hover, #profile-add-post:active {
+    text-decoration: underline !important;
+}
+
+.m-width-90 {
+    width: 90% !important;
+}
+
+.m-width-100 {
+    width: 100% !important;
+}
+
+
 @import '../node_modules/bootstrap/scss/bootstrap';
