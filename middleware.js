@@ -39,7 +39,7 @@ module.exports.isAuthor = async(req, res, next) => {
     const post = await Post.findById(id)
     if (!post.author.equals(req.user._id)) {
         req.flash('error', 'You can\'t touch this')
-        return res.redirect(`/posts/${id}`)
+        return res.redirect(`/${id}`)
     }
     next();
 }
@@ -59,7 +59,7 @@ module.exports.isCommentAuthor = async(req, res, next) => {
     const comment = await Comment.findById(commentId)
     if (!comment.author.equals(req.user._id)) {
         req.flash('error', 'You can\'t touch this')
-        return res.redirect(`/posts/${id}`)
+        return res.redirect(`/${id}`)
     }
     next();
 }
