@@ -4,7 +4,7 @@
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
         <h1><%= profile.username %>'s Space </h1>
     </div>
-    
+
     <%- include('../partials/filter.ejs') %>
 
 
@@ -22,12 +22,15 @@
             <img src="<%= post.image.url %>" alt="" class="card-img-top" />
         </a>
         <div class="card-body py-4">
+
             <a href="/<%= post._id %>" style="color: inherit; text-decoration: inherit;">
                 <h5 class="card-title"><%= post.title %></h5>
             </a>
-            <p class="card-text">
-                Posted by <span class="text-primary" style="text-transform: capitalize; font-weight: bold; text-decoration: none;"><%= post.author.username %></span>
+
+            <p class="card-text mt-5">
+                Posted by <a href="/users/<%= post.author._id %>" style="text-transform: capitalize; font-weight: bold; text-decoration: none;"><%= post.author.username %></a>
             </p>
+            
             <p class="card-text">
                 <small class="text-muted">
                     Created On: <%= post.createdOn %> <br>
@@ -36,6 +39,7 @@
                     <% } %>
                 </small>
             </p>
+
         </div>
     </div>
     <% } %>
