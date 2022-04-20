@@ -1,3 +1,6 @@
+// TODO
+// 1. Deleting a post does not delete its image from cloudinary
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
