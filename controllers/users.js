@@ -44,5 +44,27 @@ module.exports.logout = (req, res) => {
 module.exports.renderProfile = async (req, res) => {
     const profile = await User.findById(req.params.id);
     const posts = await Post.find({author: req.params.id}).sort({ createdOn: 'desc'}).populate('author');
-    res.render('users/profile', { profile, posts });
+
+    let createdOnDaysAgo = []
+    let modifiedOnDaysAgo = []
+
+    const calcDaysAgo = (date) => {
+        let daysAgo = Math.round(Math.abs((date - new Date()) / (24 * 60 * 60 * 1000)));
+        if (daysAgo === 0) {
+            return "today"
+        }
+        if (daysAgo === 1) {
+            return "yesterday"
+        }
+        return daysAgo
+    }
+
+    for (let i = 0; i < posts.length; i++) {
+        const post = posts[i];
+        createdOnDaysAgo.push(calcDaysAgo(post.createdOn));
+        modifiedOnDaysAgo.push(calcDaysAgo(post.modifiedOn));
+    }
+
+
+    res.render('users/profile', { profile, posts, createdOnDaysAgo, modifiedOnDaysAgo });
 }

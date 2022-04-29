@@ -16,26 +16,26 @@
     </a>
     <% } %>
 
-    <% for (let post of posts) {%>
+    <% for( let i = 0; i < posts.length; i++ ) { %>
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
-        <a href="/<%= post._id %>" style="color: inherit; text-decoration: inherit;">
-            <img src="<%= post.image.url %>" alt="" class="card-img-top" />
+        <a href="/<%= posts[i]._id %>" style="color: inherit; text-decoration: inherit;">
+            <img src="<%= posts[i].image.url %>" alt="" class="card-img-top" />
         </a>
         <div class="card-body py-4">
 
-            <a href="/<%= post._id %>" style="color: inherit; text-decoration: inherit;">
-                <h5 class="card-title"><%= post.title %></h5>
+            <a href="/<%= posts[i]._id %>" style="color: inherit; text-decoration: inherit;">
+                <h5 class="card-title"><%= posts[i].title %></h5>
             </a>
 
             <p class="card-text mt-5">
-                Posted by <a href="/users/<%= post.author._id %>" style="text-transform: capitalize; font-weight: bold; text-decoration: none;"><%= post.author.username %></a>
+                Posted by <a href="/users/<%= posts[i].author._id %>" style="text-transform: capitalize; font-weight: bold; text-decoration: none;"><%= posts[i].author.username %></a>
             </p>
-            
+
             <p class="card-text">
                 <small class="text-muted">
-                    Created On: <%= post.createdOn %> <br>
-                    <% if (post.modifiedOn) { %>
-                    Edited On: <%= post.modifiedOn %>
+                    Posted: <%= createdOnDaysAgo[i] %> <% if (Number.isInteger(createdOnDaysAgo[i])) { %> days ago <% } %> <br>
+                    <% if (modifiedOnDaysAgo[i]) { %>
+                    Last edited: <%= modifiedOnDaysAgo[i] %> <% if (Number.isInteger(modifiedOnDaysAgo[i])) { %>days ago<% } %>
                     <% } %>
                 </small>
             </p>

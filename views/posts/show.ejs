@@ -9,20 +9,20 @@
             <h5 class="card-title"><%= post.title %></h5>
 
             <% if (post.text) { %>
-                <p class="card-text">
-                    <%= post.text %>
-                </p>
+            <p class="card-text">
+                <%= post.text %>
+            </p>
             <% } %>
-            
+
             <p class="card-text mt-5">
                 Posted by <a href="/users/<%= post.author._id %>" style="text-transform: capitalize; font-weight: bold; text-decoration: none;"><%= post.author.username %></a>
             </p>
 
             <p class="card-text">
                 <small class="text-muted">
-                    Created On: <%= post.createdOn %> <br>
-                    <% if (post.modifiedOn) { %>
-                    Edited On: <%= post.modifiedOn %>
+                    Posted: <%= createdOnDaysAgo %> <% if (Number.isInteger(createdOnDaysAgo)) { %> days ago <% } %> <br>
+                    <% if (modifiedOnDaysAgo) { %>
+                    Last edited: <%= modifiedOnDaysAgo %> <% if (Number.isInteger(modifiedOnDaysAgo)) { %>days ago<% } %>
                     <% } %>
                 </small>
             </p>
