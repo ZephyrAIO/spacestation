@@ -1,13 +1,9 @@
-// TODO
-// 1. Deleting a post does not delete its image from cloudinary
-
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 
 const express = require('express');
 const app = express();
-
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
@@ -20,22 +16,18 @@ const passport = require('passport');
 const LocalStrat = require('passport-local');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
-
 const http = require('http');
 const reload = require('reload');
-
 
 
 // Models
 const User = require('./models/user');
 
 
-
 // Routes
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const commentRoutes = require('./routes/comments');
-
 
 
 // Mongoose connection
@@ -51,7 +43,6 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
     console.log("Database connected");
 });
-
 
 
 // Session
@@ -84,7 +75,6 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 
 
-
 // App
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -99,9 +89,6 @@ app.use(mongoSanitize({
 }));
 
 
-
-
-
 // Auth
 app.use(passport.initialize());
 app.use(passport.session())
@@ -112,10 +99,8 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 
-
 // Flash
 app.use(flash());
-
 
 
 // Helmet
@@ -154,7 +139,7 @@ app.use(
 );
 
 
-// Localssss
+// Locals
 app.use((req, res, next) => {
     if (req.url === "/reload/reload.js") {
         next()
