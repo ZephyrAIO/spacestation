@@ -1,9 +1,12 @@
-const { date } = require('joi');
 const mongoose = require('mongoose');
-const Comment = require('./comment')
 const Schema = mongoose.Schema;
 
-// Likes/dislikes
+const Comment = require('./comment')
+
+
+const { Like } = require('./like')
+const { Dislike } = require('./dislike')
+
 
 const PostSchema = new Schema({
     author: {
@@ -23,12 +26,18 @@ const PostSchema = new Schema({
     modifiedOn: {
         type: Date,
     },
-    likes: {
-        type: Number,
-    },
-    dislikes: {
-        type: Number,
-    },
+    likes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Like'
+        }
+    ],
+    dislikes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Dislike'
+        }
+    ],
     comments: [
         {
             type: Schema.Types.ObjectId,
@@ -42,6 +51,16 @@ PostSchema.post('findOneAndDelete', async function (doc) {
         await Comment.deleteMany({
             _id: {
                 $in: doc.comments
+            }
+        })
+        await Like.deleteMany({
+            _id: {
+                $in: doc.likes
+            }
+        })
+        await Dislike.deleteMany({
+            _id: {
+                $in: doc.dislike
             }
         })
     }

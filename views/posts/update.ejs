@@ -6,7 +6,7 @@
     </div>
 
     <div style="max-width: 640px; margin: 0 auto;">
-        <form action="/<%= post._id %>?_method=PUT" method="POST" novalidate class="validated-form pb-5" enctype="multipart/form-data">
+        <form action="/posts/<%= post._id %>?_method=PUT" method="POST" novalidate class="validated-form pb-5" enctype="multipart/form-data">
             <div class="form-group pb-4">
                 <label for="title">Title *</label>
                 <input type="text" class="form-control" id="title" value="<%= post.title %>" name="post[title]" required>

@@ -1,3 +1,9 @@
+// TODO
+// 1. DONE update routes to include post
+// 2. DONE update post model to include likes and dislikes with user refs
+// 3. create route for liking and disliking
+// 4. DONE create like and dislike buttons
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
@@ -19,6 +25,8 @@ const helmet = require('helmet');
 const http = require('http');
 const reload = require('reload');
 
+
+const Post = require('./models/post');
 
 // Models
 const User = require('./models/user');
@@ -83,6 +91,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use(mongoSanitize({
     replaceWith: '_'
@@ -154,9 +163,117 @@ app.use((req, res, next) => {
     }
 })
 
+const { Like } = require('./models/like');
+const { Dislike } = require('./models/dislike');
+
+app.post('/like', async (req, res) => {
+    // const id = req.body.id
+    // const post = await Post.findById(id);
+    // const user = await User.findById(req.user._id).populate("likes").populate("dislikes");
+
+    // console.log("\n\nLike Clicked:");
+    // const hasVote = (arr) => {
+    //     for (let i = 0; i < arr.length; i++) {
+    //         const obj = arr[i];
+    //         if (obj.post.valueOf() === post._id.valueOf()) {
+    //             console.log("Like or Dislike Found");
+    //             return obj._id
+    //         }
+    //     }
+    //     console.log("Like or Dislike NOT Found");
+    //     return false
+    // }
+
+    // const likeExists = hasVote(user.likes);
+    // const dislikeExists = hasVote(user.dislikes);
+
+    // if (likeExists) {
+    //     // find and remove like
+    //     await Post.findByIdAndUpdate(post._id, { $pull: { likes: likeExists } });
+    //     await User.findByIdAndUpdate(user._id, { $pull: { likes: likeExists } });
+    //     await Like.findByIdAndDelete(likeExists);
+    //     console.log("Like Removed");
+    // } else {
+    //     const like = new Like();
+    //     like.post = post;
+    //     like.user = user;
+    //     await like.save();
+    //     user.likes.push(like._id);
+    //     post.likes.push(like._id);
+    //     await post.save();
+    //     await user.save();
+    //     console.log("Like Added");
+    // }
+
+    // if (dislikeExists) {
+    //     // find and remove dislike
+    //     await Post.findByIdAndUpdate(post._id, { $pull: { dislikes: dislikeExists } });
+    //     await User.findByIdAndUpdate(user._id, { $pull: { dislikes: dislikeExists } });
+    //     await Dislike.findByIdAndDelete(dislikeExists);
+    //     console.log("Dislike Removed");
+    // }
+
+    // res.status(200).send(req.body);
+});
+
+
+app.post('/dislike', async (req, res) => {
+    // const id = req.body.id
+    // const post = await Post.findById(id);
+    // const user = await User.findById(req.user._id).populate("dislikes").populate("likes");
+
+    // console.log("\n\nDisike Clicked:");
+    // const hasVote = (arr) => {
+    //     for (let i = 0; i < arr.length; i++) {
+    //         const obj = arr[i];
+    //         if (obj.post.valueOf() === post._id.valueOf()) {
+    //             console.log("Dislike or Like Found");
+    //             return obj._id
+    //         }
+    //     }
+    //     console.log("Dislike or Like NOT Found");
+    //     return false
+    // }
+
+    // const dislikeExists = hasVote(user.dislikes);
+    // const likeExists = hasVote(user.likes);
+
+    // if (dislikeExists) {
+    //     // find and remove like
+    //     await Post.findByIdAndUpdate(post._id, { $pull: { dislikes: dislikeExists } });
+    //     await User.findByIdAndUpdate(user._id, { $pull: { dislikes: dislikeExists } });
+    //     await Dislike.findByIdAndDelete(dislikeExists);
+    //     console.log("Dislike Removed");
+    // } else {
+    //     const dislike = new Dislike();
+    //     dislike.post = post;
+    //     dislike.user = user;
+    //     await dislike.save();
+    //     user.dislikes.push(dislike._id);
+    //     post.dislikes.push(dislike._id);
+    //     await post.save();
+    //     await user.save();
+    //     console.log("Dislike Added");
+    // }
+
+    // if (likeExists) {
+    //     // find and remove dislike
+    //     await Post.findByIdAndUpdate(post._id, { $pull: { likes: likeExists } });
+    //     await User.findByIdAndUpdate(user._id, { $pull: { likes: likeExists } });
+    //     await Like.findByIdAndDelete(likeExists);
+    //     console.log("Like Removed");
+    // }
+
+    // res.status(200).send(req.body);
+});
+
+
+
+
 app.use('/', userRoutes)
 app.use('/', postRoutes)
 app.use('/:id/comments', commentRoutes)
+
 
 
 app.all('*', (req, res, next) => {

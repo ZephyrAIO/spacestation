@@ -4,7 +4,7 @@ const { cloudinary } = require('../cloudinary');
 // Exports
 // C
 module.exports.renderCreate = (req, res) => {
-    res.render('posts/new');
+    res.render('posts/create');
 }
 
 module.exports.create = async (req, res, next) => {
@@ -14,7 +14,7 @@ module.exports.create = async (req, res, next) => {
     post.author = req.user._id;
     await post.save();
     req.flash('success', 'Post created');
-    res.redirect(`${post._id}`);
+    res.redirect(`posts/${post._id}`);
 }
 
 // R
@@ -82,7 +82,7 @@ module.exports.renderUpdate = async (req, res) => {
         req.flash('error', 'You almost fell down a hole of nothing! But, you\'re safe now.');
         return res.redirect('/profile');
     }
-    res.render('posts/edit', { post });
+    res.render('posts/update', { post });
 }
 
 module.exports.update = async (req, res) => {
@@ -96,7 +96,7 @@ module.exports.update = async (req, res) => {
     }
     await post.save();
     req.flash('success', 'Post updated');
-    res.redirect(`/${post._id}`);
+    res.redirect(`/posts/${post._id}`);
 }
 
 // D

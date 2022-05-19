@@ -18,7 +18,7 @@
 
     <% for( let i = 0; i < posts.length; i++ ) { %>
     <div class="card border-0 mt-5 mb-3 text-black bg-light">
-        <a href="/<%= posts[i]._id %>" style="color: inherit; text-decoration: inherit;">
+        <a href="/posts/<%= posts[i]._id %>" style="color: inherit; text-decoration: inherit;">
             <img src="<%= posts[i].image.url %>" alt="" class="card-img-top" />
         </a>
         <div class="card-body py-4">
@@ -39,6 +39,9 @@
                     <% } %>
                 </small>
             </p>
+
+            <button type="button" class="js-like-btn btn btn-outline-dark" data-post-id="<%= posts[i]._id %>">Like</button>
+            <button type="button" class="js-dislike-btn btn btn-outline-dark" data-post-id="<%= posts[i]._id %>">Dislike</button>
 
         </div>
     </div>

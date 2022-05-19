@@ -12,7 +12,7 @@ const { isLoggedIn, isAuthor, validatePost } = require('../middleware')
 
 // Routes
 // C - Place before posts/:id
-router.get('/new', isLoggedIn, posts.renderCreate)
+router.get('/posts/create', isLoggedIn, posts.renderCreate)
 
 router.post('/', isLoggedIn, upload.single(('image')), validatePost, catchAsync(posts.create))
 
@@ -20,17 +20,17 @@ router.post('/', isLoggedIn, upload.single(('image')), validatePost, catchAsync(
 // R
 router.get('/', catchAsync(posts.renderIndex))
 
-router.get('/:id', catchAsync(posts.renderShow))
+router.get('/posts/:id', catchAsync(posts.renderShow))
 
 
 // U
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(posts.renderUpdate))
+router.get('/posts/:id/update', isLoggedIn, isAuthor, catchAsync(posts.renderUpdate))
 
-router.put('/:id', isLoggedIn, isAuthor, upload.single(('image')), validatePost, catchAsync(posts.update))
+router.put('/posts/:id', isLoggedIn, isAuthor, upload.single(('image')), validatePost, catchAsync(posts.update))
 
 
 // D
-router.delete('/:id', isLoggedIn, isAuthor, catchAsync(posts.delete))
+router.delete('/posts/:id', isLoggedIn, isAuthor, catchAsync(posts.delete))
 
 
 module.exports = router
