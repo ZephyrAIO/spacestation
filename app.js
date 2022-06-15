@@ -156,7 +156,7 @@ app.use((req, res, next) => {
     if (req.url === "/reload/reload.js") {
         next()
     } else {
-        if (req.originalUrl !== "/login" && req.originalUrl !== "/logout" && req.originalUrl !== "/register") {
+        if (req.originalUrl !== "/login" && req.originalUrl !== "/logout" && req.originalUrl !== "/register" && req.originalUrl !== "/like") {
             req.session.returnTo = req.originalUrl;
         }
         res.locals.currentUser = req.user;
@@ -169,10 +169,8 @@ app.use((req, res, next) => {
 
 const { isLoggedIn } = require('./middleware')
 const { Like } = require('./models/like');
-const { Dislike } = require('./models/dislike');
 
 
-// Check user is logged in
 app.post('/like', isLoggedIn, async (req, res) => {
     const id = req.body.id
     const post = await Post.findById(id);
@@ -188,9 +186,7 @@ app.post('/like', isLoggedIn, async (req, res) => {
         return false
     }
 
-
     const likeExists = hasVote(user.likes);
-    // const dislikeExists = hasVote(user.dislikes);
 
     if (likeExists) {
         // find and remove like
@@ -209,14 +205,6 @@ app.post('/like', isLoggedIn, async (req, res) => {
         await post.save();
         res.send(true);
     }
-
-    // if (dislikeExists) {
-    //     // find and remove dislike
-    //     await Post.findByIdAndUpdate(post._id, { $pull: { dislikes: dislikeExists } });
-    //     await User.findByIdAndUpdate(user._id, { $pull: { dislikes: dislikeExists } });
-    //     await Dislike.findByIdAndDelete(dislikeExists);
-    //     console.log("Dislike Removed");
-    // }
 });
 
 
