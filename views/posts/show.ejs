@@ -2,36 +2,7 @@
 
 <div class="container" style="max-width: 640px; margin: 0 auto;">
 
-    <div class="card border-0 mt-5 mb-3 text-black bg-light">
-        <img src="<%= post.image.url %>" alt="" class="card-img-top" />
-        <div class="card-body py-4">
-
-            <h5 class="card-title"><%= post.title %></h5>
-
-            <% if (post.text) { %>
-            <p class="card-text">
-                <%= post.text %>
-            </p>
-            <% } %>
-
-            <p class="card-text mt-5">
-                Posted by <a href="/users/<%= post.author._id %>" style="text-transform: capitalize; font-weight: bold; text-decoration: none;"><%= post.author.username %></a>
-            </p>
-
-            <p class="card-text">
-                <small class="text-muted">
-                    Posted: <%= createdOnDaysAgo %> <% if (Number.isInteger(createdOnDaysAgo)) { %> days ago <% } %> <br>
-                    <% if (modifiedOnDaysAgo) { %>
-                    Last edited: <%= modifiedOnDaysAgo %> <% if (Number.isInteger(modifiedOnDaysAgo)) { %>days ago<% } %>
-                    <% } %>
-                </small>
-            </p>
-
-            <button type="button" class="js-like-btn btn btn-outline-dark" data-post-id="<%= post._id %>">Like</button>
-            <button type="button" class="js-dislike-btn btn btn-outline-dark" data-post-id="<%= post._id %>">Dislike</button>
-
-        </div>
-    </div>
+    <%- include('../partials/post.ejs', {post: post, isSingular: true}) %>
 
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
         <% if(currentUser && post.author.equals(currentUser._id)) { %>
@@ -47,7 +18,7 @@
 
             <label class="form-label" for="text">
                 <% if(currentUser) { %>
-                Comment as <%= user.username %>
+                Comment as <%= currentUser.username %>
                 <% } else { %>
                 <a href="/login">Sign in</a> or <a href="/register">Join</a> to leave a comment
                 <% } %>

@@ -32,5 +32,4 @@ router.put('/posts/:id', isLoggedIn, isAuthor, upload.single(('image')), validat
 // D
 router.delete('/posts/:id', isLoggedIn, isAuthor, catchAsync(posts.delete))
 
-
 module.exports = router

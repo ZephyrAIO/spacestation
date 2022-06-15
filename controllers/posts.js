@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const { cloudinary } = require('../cloudinary');
+const moment = require('moment');
 
 // Exports
 // C
@@ -19,52 +20,17 @@ module.exports.create = async (req, res, next) => {
 
 // R
 module.exports.renderIndex = async (req, res) => {
-    const posts = await Post.find({}).sort({ createdOn: 'desc' }).populate('author');
-
-    let createdOnDaysAgo = []
-    let modifiedOnDaysAgo = []
-
-    const calcDaysAgo = (date) => {
-        let daysAgo = Math.round(Math.abs((date - new Date()) / (24 * 60 * 60 * 1000)));
-        if (daysAgo === 0) {
-            return "today"
-        }
-        if (daysAgo === 1) {
-            return "yesterday"
-        }
-        return daysAgo
-    }
-
-    for (let i = 0; i < posts.length; i++) {
-        const post = posts[i];
-        createdOnDaysAgo.push(calcDaysAgo(post.createdOn));
-        modifiedOnDaysAgo.push(calcDaysAgo(post.modifiedOn));
-    }
-
-    res.render('posts/index', { posts, createdOnDaysAgo, modifiedOnDaysAgo });
+    const posts = await Post.find({}).sort({ createdOn: 'desc' }).populate('author').populate('likes');
+    res.render('posts/index', { posts, moment: moment });
 }
 
 module.exports.renderShow = async (req, res) => {
-    const post = await Post.findById(req.params.id).populate('author').populate({
+    const post = await Post.findById(req.params.id).populate('author').populate('likes').populate({
         path: 'comments',
         populate: {
             path: 'author'
         }
     });
-
-    const calcDaysAgo = (date) => {
-        let daysAgo = Math.round(Math.abs((date - new Date()) / (24 * 60 * 60 * 1000)));
-        if (daysAgo === 0) {
-            return "today"
-        }
-        if (daysAgo === 1) {
-            return "yesterday"
-        }
-        return daysAgo
-    }
-
-    let createdOnDaysAgo = calcDaysAgo(post.createdOn);
-    let modifiedOnDaysAgo = calcDaysAgo(post.modifiedOn);
 
     post.comments.reverse();
     if (!post) {
@@ -72,7 +38,7 @@ module.exports.renderShow = async (req, res) => {
         return res.redirect('/');
     }
     const user = req.user
-    res.render('posts/show', { post, createdOnDaysAgo, modifiedOnDaysAgo, user });
+    res.render('posts/show', { post, moment: moment });
 }
 
 // U

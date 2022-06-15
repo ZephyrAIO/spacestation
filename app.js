@@ -1,8 +1,11 @@
 // TODO
-// 1. DONE update routes to include post
-// 2. DONE update post model to include likes and dislikes with user refs
-// 3. create route for liking and disliking
-// 4. DONE create like and dislike buttons
+
+// 1. Refactor Likes to a route and controller
+// 2. Placeholders https://getbootstrap.com/docs/5.2/components/placeholders/
+// 3. Modal confirmation for delete post
+// 4. Breadcrumb and back arrow
+
+
 
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
@@ -163,47 +166,49 @@ app.use((req, res, next) => {
     }
 })
 
+
+const { isLoggedIn } = require('./middleware')
 const { Like } = require('./models/like');
 const { Dislike } = require('./models/dislike');
 
-app.post('/like', async (req, res) => {
-    // const id = req.body.id
-    // const post = await Post.findById(id);
-    // const user = await User.findById(req.user._id).populate("likes").populate("dislikes");
 
-    // console.log("\n\nLike Clicked:");
-    // const hasVote = (arr) => {
-    //     for (let i = 0; i < arr.length; i++) {
-    //         const obj = arr[i];
-    //         if (obj.post.valueOf() === post._id.valueOf()) {
-    //             console.log("Like or Dislike Found");
-    //             return obj._id
-    //         }
-    //     }
-    //     console.log("Like or Dislike NOT Found");
-    //     return false
-    // }
+// Check user is logged in
+app.post('/like', isLoggedIn, async (req, res) => {
+    const id = req.body.id
+    const post = await Post.findById(id);
+    const user = await User.findById(req.user._id).populate("likes").populate("dislikes");
 
-    // const likeExists = hasVote(user.likes);
+    const hasVote = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            const obj = arr[i];
+            if (obj.post.equals(post._id)) {
+                return obj._id
+            }
+        }
+        return false
+    }
+
+
+    const likeExists = hasVote(user.likes);
     // const dislikeExists = hasVote(user.dislikes);
 
-    // if (likeExists) {
-    //     // find and remove like
-    //     await Post.findByIdAndUpdate(post._id, { $pull: { likes: likeExists } });
-    //     await User.findByIdAndUpdate(user._id, { $pull: { likes: likeExists } });
-    //     await Like.findByIdAndDelete(likeExists);
-    //     console.log("Like Removed");
-    // } else {
-    //     const like = new Like();
-    //     like.post = post;
-    //     like.user = user;
-    //     await like.save();
-    //     user.likes.push(like._id);
-    //     post.likes.push(like._id);
-    //     await post.save();
-    //     await user.save();
-    //     console.log("Like Added");
-    // }
+    if (likeExists) {
+        // find and remove like
+        await Post.findByIdAndUpdate(post._id, { $pull: { likes: likeExists } });
+        await User.findByIdAndUpdate(user._id, { $pull: { likes: likeExists } });
+        await Like.findByIdAndDelete(likeExists);
+        res.send(false);
+    } else {
+        const like = new Like();
+        like.post = post;
+        like.user = user;
+        await like.save();
+        user.likes.push(like._id);
+        await user.save();
+        post.likes.push(like._id);
+        await post.save();
+        res.send(true);
+    }
 
     // if (dislikeExists) {
     //     // find and remove dislike
@@ -212,61 +217,7 @@ app.post('/like', async (req, res) => {
     //     await Dislike.findByIdAndDelete(dislikeExists);
     //     console.log("Dislike Removed");
     // }
-
-    // res.status(200).send(req.body);
 });
-
-
-app.post('/dislike', async (req, res) => {
-    // const id = req.body.id
-    // const post = await Post.findById(id);
-    // const user = await User.findById(req.user._id).populate("dislikes").populate("likes");
-
-    // console.log("\n\nDisike Clicked:");
-    // const hasVote = (arr) => {
-    //     for (let i = 0; i < arr.length; i++) {
-    //         const obj = arr[i];
-    //         if (obj.post.valueOf() === post._id.valueOf()) {
-    //             console.log("Dislike or Like Found");
-    //             return obj._id
-    //         }
-    //     }
-    //     console.log("Dislike or Like NOT Found");
-    //     return false
-    // }
-
-    // const dislikeExists = hasVote(user.dislikes);
-    // const likeExists = hasVote(user.likes);
-
-    // if (dislikeExists) {
-    //     // find and remove like
-    //     await Post.findByIdAndUpdate(post._id, { $pull: { dislikes: dislikeExists } });
-    //     await User.findByIdAndUpdate(user._id, { $pull: { dislikes: dislikeExists } });
-    //     await Dislike.findByIdAndDelete(dislikeExists);
-    //     console.log("Dislike Removed");
-    // } else {
-    //     const dislike = new Dislike();
-    //     dislike.post = post;
-    //     dislike.user = user;
-    //     await dislike.save();
-    //     user.dislikes.push(dislike._id);
-    //     post.dislikes.push(dislike._id);
-    //     await post.save();
-    //     await user.save();
-    //     console.log("Dislike Added");
-    // }
-
-    // if (likeExists) {
-    //     // find and remove dislike
-    //     await Post.findByIdAndUpdate(post._id, { $pull: { likes: likeExists } });
-    //     await User.findByIdAndUpdate(user._id, { $pull: { likes: likeExists } });
-    //     await Like.findByIdAndDelete(likeExists);
-    //     console.log("Like Removed");
-    // }
-
-    // res.status(200).send(req.body);
-});
-
 
 
 
@@ -287,10 +238,14 @@ app.all('*', (req, res, next) => {
 app.use((err, req, res, next) => {
     if (!err.statusCode) err.statusCode = 500
     if (!err.message) err.message = "Something went wrong"
+    if (err.statusCode === 404) {
+        res.status(err.statusCode).render('404', { err })
+        return
+    }
     res.status(err.statusCode).render('error', { err })
 })
 
-const port = process.env.PORT || 3000
+
 app.set('port', process.env.PORT || 3000)
 const server = http.createServer(app)
 
