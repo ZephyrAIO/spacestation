@@ -1,0 +1,22 @@
+<% layout('./layouts/boilerplate') %>
+
+<div class="container" style="max-width: 640px;">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-5">
+        <h1>Sign in</h1>
+    </div>
+
+    <form action="/login" method="POST" novalidate>
+        <div class="form-group pb-4">
+            <label for="username" class="mb-3">Username *</label>
+            <input class="form-control" type="text" id="username" name="username" required>
+            <div class="valid-feedback">Noice!</div>
+        </div>
+        <div class="form-group pb-5">
+            <label for="password" class="mb-3">Password *</label>
+            <input class="form-control" type="password" id="password" name="password" required>
+            <div class="valid-feedback">Noice!</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary px-4 border-3 rounded-pill">Sign in</button> <span class="mx-4">or</span><a href="/register" class="text-secondary">Join</a>
+    </form>
+</div>

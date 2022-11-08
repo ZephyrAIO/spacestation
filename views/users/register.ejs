@@ -1,0 +1,27 @@
+<% layout('./layouts/boilerplate') %>
+
+<div class="container" style="max-width: 640px;">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-5">
+        <h1>Join Now</h1>
+    </div>
+
+    <form action="/register" method="POST" novalidate class="validated-form">
+        <div class="form-group pb-4">
+            <label for="email" class="mb-3">Email *</label>
+            <input class="form-control" type="email" id="email" name="email" required>
+            <div class="valid-feedback">Noice!</div>
+        </div>
+        <div class="form-group pb-4">
+            <label for="username" class="mb-3">Username *</label>
+            <input class="form-control" type="text" id="username" name="username" required>
+            <div class="valid-feedback">Noice!</div>
+        </div>
+        <div class="form-group pb-5">
+            <label for="password" class="mb-3">Password *</label>
+            <input class="form-control" type="password" id="password" name="password" required>
+            <div class="valid-feedback">Noice!</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary px-4 border-3 rounded-pill">Join</button>
+    </form>
+</div>

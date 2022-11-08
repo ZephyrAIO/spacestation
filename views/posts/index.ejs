@@ -1,0 +1,15 @@
+<% layout('./layouts/boilerplate') %>
+
+<div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-middle my-5">
+        <h1>Space Station</h1>
+    </div>
+
+    <div style="max-width: 640px; margin: 0 auto;">
+        <%- include('../partials/filter.ejs') %>
+
+        <% for( let i = 0; i < posts.length; i++ ) { let post = posts[i]; %>
+            <%- include('../partials/post.ejs', {post: post, isSingular: false}) %>
+        <% } %>
+    </div>
+</div>

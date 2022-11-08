@@ -1,0 +1,57 @@
+<% layout('./layouts/boilerplate') %>
+
+<div class="container" style="max-width: 640px; margin: 0 auto;">
+
+    <%- include('../partials/post.ejs', {post: post, isSingular: true}) %>
+
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+        <% if(currentUser && post.author.equals(currentUser._id)) { %>
+        <div class="p-2"><a class="text-secondary" href="/posts/<%= post._id %>/update" role="button">Edit</a></div>
+        <form class="" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-link p-2 text-secondary">Delete</button>
+        </form>
+        <% } %>
+    </div>
+
+    <form action="/<%= post._id %>/comments" method="POST" class="py-5 validated-form" novalidate>
+        <div class="form-group pb-4">
+
+            <label class="form-label" for="text">
+                <% if(currentUser) { %>
+                Comment as <%= currentUser.username %>
+                <% } else { %>
+                <a href="/login">Sign in</a> or <a href="/register">Join</a> to leave a comment
+                <% } %>
+            </label>
+
+            <input type="text" class="form-control" rows="6" id="text" name="comment[text]" placeholder="Is this Space Station worthy?" required <% if(!currentUser) { %> disabled <% } %>>
+            <div class="valid-feedback">
+                Noice!
+            </div>
+
+        </div>
+        <% if(currentUser) { %>
+        <button type="submit" class="btn btn-link text-primary" <% if(!currentUser) { %> disabled <% } %>>Send it</button>
+        <% } %>
+    </form>
+
+    <ul style="list-style: none; padding: 0; margin: 0;">
+        <% if (post.comments) { %>
+        <% for (let comment of post.comments) { %>
+        <li class="pb-4">
+            <div class="card text-white bg-dark border-white">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2"><%= comment.author.username %>:</h6>
+                    <p class="card-text"><%= comment.text %></p>
+                    <% if(currentUser && comment.author.equals(currentUser._id)) { %>
+                    <form action="/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-link text-danger btn-sm">Remove</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+        </li>
+        <% } %>
+        <% } %>
+    </ul>
+</div>

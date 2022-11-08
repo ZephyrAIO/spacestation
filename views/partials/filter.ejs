@@ -1,0 +1,28 @@
+<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-5 text-white">
+    <input class="form-control bg-dark text-white border-white" type="search" placeholder="Search" aria-label="Search" id="search">
+</div>
+
+<script>
+    
+
+    let search = () => {
+        // Declare variables
+        var input, filter, i, cards, card, cardTitle, txtValue;
+        input = document.getElementById('search');
+        filter = input.value.toUpperCase();
+        cards = document.querySelectorAll(".card");
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < cards.length; i++) {
+            card = cards[i]
+            cardTitle = card.querySelector(".card-title")
+            txtValue = cardTitle.textContent || cardTitle.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        }
+    }
+
+    document.querySelector('#search').addEventListener("keyup", search);
+</script>

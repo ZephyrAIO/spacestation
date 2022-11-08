@@ -1,0 +1,45 @@
+{
+  "name": "spacestation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start-sass": "sass --watch sass/main.scss public/style/main.css",
+    "dev": "parallelshell \"nodemon -e js,mjs,json,ejs,scss\" \"npm run start-sass\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "body-parser": "^1.20.0",
+    "bootstrap": "^5.1.3",
+    "cloudinary": "^1.28.1",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^4.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
+    "ejs-mate": "^3.0.0",
+    "express": "^4.17.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-session": "^1.17.2",
+    "helmet": "^5.0.2",
+    "joi": "^17.6.0",
+    "method-override": "^3.0.0",
+    "moment": "^2.29.3",
+    "mongoose": "^6.1.7",
+    "multer": "^1.4.4",
+    "multer-storage-cloudinary": "^4.0.0",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.1.0",
+    "qs": "^6.10.3",
+    "reload": "^3.2.0",
+    "sanitize-html": "^2.7.0",
+    "sass": "^1.49.9"
+  },
+  "devDependencies": {
+    "parallelshell": "^3.0.1"
+  }
+}

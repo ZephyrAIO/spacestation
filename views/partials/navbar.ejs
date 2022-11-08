@@ -1,0 +1,29 @@
+<header class="p-3 sticky-top">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start my-4">
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link pe-4 link-light">Space Station</a></li>
+                <li><a href="/posts/create" class="nav-link link-light">Share Your Station</a></li>
+            </ul>
+
+
+            <% if(currentUser) { %>
+            <a class="nav-link dropdown-toggle link-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <%= currentUser.username %>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="/users/<%= currentUser._id %>">Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a href="/logout" class="dropdown-item text-danger" href="#">Logout</a></li>
+            </ul>
+
+            <% } else { %>
+            <a href="/login" class="btn btn-outline-primary px-4 border-3 rounded-pill">Sign in</a>
+            <a href="/register" class="btn btn-primary ms-4 px-4 border-3 rounded-pill">Join</a>
+            <% } %>
+
+        </div>
+    </div>
+</header>
